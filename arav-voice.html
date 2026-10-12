@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17102f">
+<title>Arav Voice</title>
+<style>
+:root{--bg:#120d25;--panel:#21183c;--gold:#ffd166;--text:#fff;--muted:#c8bfdc}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#17102f,#090713);font-family:Arial,sans-serif;color:var(--text);min-height:100vh}
+header{padding:22px 18px 14px;text-align:center}h1{margin:0;color:var(--gold);font-size:30px}header p{margin:7px 0;color:var(--muted)}
+nav{display:flex;gap:8px;padding:0 12px 14px;justify-content:center;flex-wrap:wrap}
+button{border:0;border-radius:12px;padding:11px 14px;font-weight:bold;background:var(--gold);color:#211632;cursor:pointer}
+nav button{background:#30244e;color:white}nav button.active{background:var(--gold);color:#211632}
+main{max-width:680px;margin:auto;padding:0 14px 28px}.panel{background:var(--panel);border:1px solid #493768;border-radius:18px;padding:18px;margin-bottom:14px}
+h2{margin:0 0 12px;font-size:20px}.muted{color:var(--muted);font-size:14px;line-height:1.5}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #66538a;background:#120d25;color:white;margin:6px 0 12px}
+.room{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #493768}.room:last-child{border:0}
+.coins{font-size:27px;color:var(--gold);font-weight:bold}.hidden{display:none}.giftrow{display:flex;gap:8px;flex-wrap:wrap}.giftrow button{flex:1;min-width:100px}
+footer{text-align:center;color:#a99cbe;font-size:12px;padding:12px}
+</style>
+</head>
+<body>
+<header><h1>🎙️ Arav Voice</h1><p>Voice Rooms • Gifts • Coins • Wallet</p></header>
+<nav>
+<button class="active" onclick="showTab('rooms',this)">Voice Rooms</button>
+<button onclick="showTab('gifts',this)">Gifts</button>
+<button onclick="showTab('wallet',this)">Wallet</button>
+<button onclick="showTab('profile',this)">Profile</button>
+</nav>
+<main>
+<section id="rooms" class="tab">
+<div class="panel"><h2>➕ Naya Room Banayein</h2>
+<label class="muted" for="roomName">Room ka naam</label><input id="roomName" placeholder="Jaise: Dosti ki Mehfil" maxlength="40">
+<button onclick="createRoom()">Create Demo Room</button>
+<p class="muted">Yeh abhi demo hai. Ismein live microphone/audio connect nahi hota.</p></div>
+<div class="panel"><h2>🎧 Rooms</h2><div id="roomList"><p class="muted">Abhi koi room nahi. Upar se demo room banayein.</p></div></div>
+</section>
+<section id="gifts" class="tab hidden"><div class="panel"><h2>🎁 Gifts</h2><p class="muted">Gift bhejne ke liye demo coins lagenge.</p><div class="giftrow">
+<button onclick="sendGift('🌹 Rose',10)">🌹 Rose · 10</button><button onclick="sendGift('❤️ Heart',25)">❤️ Heart · 25</button><button onclick="sendGift('👑 Crown',100)">👑 Crown · 100</button></div><p id="giftMsg" class="muted"></p></div></section>
+<section id="wallet" class="tab hidden"><div class="panel"><h2>🪙 Demo Wallet</h2><div class="coins"><span id="coinCount">500</span> coins</div><p class="muted">Starting demo balance: 500 coins. Yeh asli paisa ya payment wallet nahi hai.</p><button onclick="addDemoCoins()">Add 100 Demo Coins</button><p id="walletMsg" class="muted"></p></div></section>
+<section id="profile" class="tab hidden"><div class="panel"><h2>👤 Profile</h2><label class="muted" for="userName">Aapka naam</label><input id="userName" placeholder="Apna naam likhein"><button onclick="saveProfile()">Save Name</button><p id="profileMsg" class="muted"></p></div></section>
+</main>
+<footer>Arav Voice • Free starter demo • Data isi browser mein rehta hai</footer>
+<script>
+let coins=500;
+function showTab(id,btn){document.querySelectorAll('.tab').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+function createRoom(){let input=document.getElementById('roomName'),name=input.value.trim();if(!name){alert('Pehle room ka naam likhein.');return}let list=document.getElementById('roomList');if(list.querySelector('.muted'))list.innerHTML='';let item=document.createElement('div');item.className='room';let title=document.createElement('strong');title.textContent='🎙️ '+name;let join=document.createElement('button');join.textContent='Join Demo';join.onclick=()=>alert('Demo room khul gaya! Live voice ke liye audio server/backend jodna hoga.');item.append(title,join);list.prepend(item);input.value=''}
+function updateCoins(){document.getElementById('coinCount').textContent=coins}
+function sendGift(name,cost){if(coins<cost){document.getElementById('giftMsg').textContent='Coins kam hain. Demo coins add karein.';return}coins-=cost;updateCoins();document.getElementById('giftMsg').textContent=name+' bheja gaya (demo). '+cost+' coins kate.'}
+function addDemoCoins(){coins+=100;updateCoins();document.getElementById('walletMsg').textContent='100 demo coins add hue.'}
+function saveProfile(){let name=document.getElementById('userName').value.trim();document.getElementById('profileMsg').textContent=name?'Naam save hua: '+name:'Pehle apna naam likhein.'}
+</script>
+</body>
+</html>
